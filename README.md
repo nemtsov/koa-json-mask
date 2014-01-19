@@ -44,7 +44,7 @@ var app = koa();
 
 app.use(mask());
 
-app.use(function *(){
+app.use(function *() {
   this.body = {
     name: 'tobi',
     packages: 5,
@@ -84,7 +84,7 @@ var app = koa();
 
 app.use(mask());
 
-app.use(function *(){
+app.use(function *() {
   this.body = [
     {
       name: 'tobi',
@@ -145,7 +145,8 @@ Take a look at `test/index-test.js` for examples of all of these and more.
 
 ## More examples
 
-For more examples, take a look at the [examples section of the json-mask README](https://github.com/nemtsov/json-mask/blob/master/README.md#examples).
+For more examples, take a look at the
+[examples section of the json-mask README](https://github.com/nemtsov/json-mask/blob/master/README.md#examples).
 
 
 # License
