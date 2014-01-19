@@ -1,4 +1,3 @@
-
 # koa-json-mask
 
   Middleware allowing the client to mask / filter the response to only what they need,
@@ -140,13 +139,11 @@ The syntax is loosely based on XPath:
 - `a(b,c)` sub-selection will select many fields from a parent
 - ` a/*/c` the star `*` wildcard will select all items in a field
 
-Take a look at `test/index-test.js` for examples of all of these and more.
-
 
 ## More examples
 
 For more examples, take a look at the
-[examples section of the json-mask README](https://github.com/nemtsov/json-mask/blob/master/README.md#examples).
+[examples section of the json-mask README](https://github.com/nemtsov/json-mask/#examples).
 
 
 # License
