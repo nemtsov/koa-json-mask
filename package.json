@@ -1,6 +1,6 @@
 {
   "name": "koa-json-mask",
-  "version": "0.1.0",
+  "version": "0.3.2",
   "repository": "nemtsov/koa-json-mask",
   "description": "middleware allowing the client to filter the response to only what they need",
   "keywords": [
@@ -13,7 +13,7 @@
     "partial response"
   ],
   "dependencies": {
-    "json-mask": "~0.2.0"
+    "json-mask": "~0.3.2"
   },
   "scripts": {
     "test": "mocha --harmony --require should --bail"
