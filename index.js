@@ -1,6 +1,6 @@
-var jsonMask = require('json-mask');
-var compile = jsonMask.compile;
-var filter = jsonMask.filter;
+const jsonMask = require('json-mask');
+const compile = jsonMask.compile;
+const filter = jsonMask.filter;
 
 /**
  * Mask parts of the response.
@@ -8,26 +8,26 @@ var filter = jsonMask.filter;
  *  - `name` querystring param name [fields]
  *
  * @param {Object} opts
- * @return {GeneratorFunction}
+ * @return {Promise}
  * @api public
  */
 
-module.exports = function (opts) {
+module.exports = opts => {
   opts = opts || {};
-  var name = opts.name || 'fields';
+  const name = opts.name || 'fields';
 
-  return function *mask(next) {
-    yield *next;
+  return async function mask(ctx, next) {
+    await next();
 
-    var body = this.body;
+    const body = ctx.body;
 
     // non-json
     if (!body || 'object' != typeof body) return;
 
     // check for fields
-    var fields = this.query[name] || this.fields;
+    const fields = ctx.query[name] || ctx.fields;
     if (!fields) return;
 
-    this.body = filter(this.body, compile(fields));
+    ctx.body = filter(ctx.body, compile(fields));
   };
 };
