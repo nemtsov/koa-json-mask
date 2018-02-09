@@ -1,76 +1,81 @@
-var request = require('supertest');
-var fields = require('..');
-var koa = require('koa');
+const request = require('supertest');
+const fields = require('..');
+const Koa = require('koa');
 
-var app = koa();
+const app = new Koa();
 
 app.use(fields());
 
-app.use(function *(next) {
-  if ('/array' == this.path) return yield next;
+app.use(async (ctx, next) => {
+  if ('/array' == ctx.path) return await next();
 
-  this.body = {
+  ctx.body = {
     name: 'tobi',
     email: 'tobi@segment.io',
     packages: 5,
     friends: ['tobi', 'loki', 'jane'],
-    location: {id: '342', name: 'London'}
+    location: { id: '342', name: 'London' }
   };
 });
 
-app.use(function *() {
-  this.body = [
+app.use(async ctx => {
+  ctx.body = [
     {
       name: 'tobi',
       email: 'tobi@segment.io',
       packages: 5,
       friends: ['abby', 'loki', 'jane'],
-      location: {id: '342', name: 'London'}
+      location: { id: '342', name: 'London' }
     },
     {
       name: 'loki',
       email: 'loki@segment.io',
       packages: 2,
       friends: ['loki', 'jane'],
-      location: {id: '62', name: 'New York'}
+      location: { id: '62', name: 'New York' }
     }
   ];
 });
 
-describe('fields()', function () {
-  describe('when ?fields is missing', function () {
-    it('should be ignored', function (done) {
-      request(app.listen())
+describe('fields()', () => {
+  let server;
+
+  beforeEach(() => (server = app.listen()));
+  afterEach(() => server.close());
+
+  describe('when ?fields is missing', () => {
+    it('should be ignored', async () => {
+      await request(server)
         .get('/')
-        .expect(200, done);
+        .expect(200);
     });
   });
 
-  describe('when ?fields is present', function () {
-    describe('with one property', function () {
-      it('should fields that property', function (done) {
-        request(app.listen())
-        .get('/?fields=name,location/name')
-        .expect({name: 'tobi', location: {name: 'London'}}, done);
+  describe('when ?fields is present', () => {
+    describe('with one property', () => {
+      it('should fields that property', async () => {
+        await request(server)
+          .get('/?fields=name,location/name')
+          .expect({ name: 'tobi', location: { name: 'London' } });
       });
     });
 
-    describe('with an array response', function () {
-      it('should fields each document', function (done) {
-        request(app.listen())
-        .get('/array?fields=name,location/name')
-        .expect([
-          {name: 'tobi', location: {name: 'London'}},
-          {name: 'loki', location: {name: 'New York'}}
-        ], done);
+    describe('with an array response', () => {
+      it('should fields each document', async () => {
+        await request(server)
+          .get('/array?fields=name,location/name')
+          .expect([
+            { name: 'tobi', location: { name: 'London' } },
+            { name: 'loki', location: { name: 'New York' } }
+          ]);
       });
     });
 
-    describe('with multiple properties', function () {
-      it('should split on commas', function (done) {
-        request(app.listen())
-        .get('/?fields=name,packages')
-        .expect({name: 'tobi', packages: 5}, done);
+    describe('with multiple properties', () => {
+      it('should split on commas', async () => {
+        await request(server)
+          .get('/?fields=name,packages')
+          .expect({ name: 'tobi', packages: 5 });
       });
     });
   });

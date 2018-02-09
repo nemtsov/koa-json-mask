@@ -1,17 +1,16 @@
-
 /**
  * Module dependencies.
  */
 
-var mask = require('..');
-var koa = require('koa');
+const mask = require('..');
+const Koa = require('koa');
 
-var app = koa();
+const app = new Koa();
 
 app.use(mask());
 
-app.use(function *(){
-  this.body = {
+app.use(async ctx => {
+  ctx.body = {
     name: 'tobi',
     packages: 5,
     friends: ['abby', 'loki', 'jane'],
@@ -19,7 +18,7 @@ app.use(function *(){
       id: '342',
       name: 'London'
     }
-  }
+  };
 });
 
 app.listen(3000);

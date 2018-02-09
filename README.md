@@ -1,22 +1,21 @@
 # koa-json-mask
 
-  Middleware allowing the client to mask / filter the response to only what they need,
-  reducing the amount of traffic over the wire using the `?fields=foo,bar,baz`
-  querystring parameter.
+Middleware allowing the client to mask / filter the response to only what they need,
+reducing the amount of traffic over the wire using the `?fields=foo,bar,baz`
+querystring parameter.
 
-  If you've used the Google APIs, provided a `?fields=` query-string to get a
-  [Partial Response](https://developers.google.com/+/api/#partial-responses),
-  and wanted to do the same for your own server, you can do so with this
-  middleware.
+If you've used the Google APIs, provided a `?fields=` query-string to get a
+[Partial Response](https://developers.google.com/+/api/#partial-responses),
+and wanted to do the same for your own server, you can do so with this
+middleware.
 
-  The difference between `koa-json-filter` and `koa-json-mask` is that this middleware
-  supports filtering parts deep within objects. If you only need to be able to
-  filter top-level params of objects in the response use `filter`, and if you need
-  more power user `mask`.
+The difference between `koa-json-filter` and `koa-json-mask` is that this middleware
+supports filtering parts deep within objects. If you only need to be able to
+filter top-level params of objects in the response use `filter`, and if you need
+more power user `mask`.
 
-  *Underneath, this middleware uses [json-mask](https://github.com/nemtsov/json-mask).
-  Use it directly without this middleware if you need more flexibility.*
-
+_Underneath, this middleware uses [json-mask](https://github.com/nemtsov/json-mask).
+Use it directly without this middleware if you need more flexibility._
 
 ## Installation
 
@@ -24,27 +23,32 @@
 $ npm install koa-json-mask
 ```
 
+In order to use this plugin with the previous version of Koa using generator functions, please use version `0.3.2`
+
+```
+$ npm install koa-json-mask@0.3.2
+```
+
 ## Options
 
- - `name` querystring param name defaulting to "fields"
-
+* `name` querystring param name defaulting to "fields"
 
 ## Example
 
 ### Object responses
 
-  Script:
+Script:
 
 ```js
-var mask = require('koa-json-mask');
-var koa = require('koa');
+const Koa = require('koa');
+const mask = require('koa-json-mask');
 
-var app = koa();
+const app = new Koa();
 
 app.use(mask());
 
-app.use(function *() {
-  this.body = {
+app.use(async ctx => {
+  ctx.body = {
     name: 'tobi',
     packages: 5,
     friends: ['abby', 'loki', 'jane'],
@@ -52,14 +56,14 @@ app.use(function *() {
       id: '342',
       name: 'London'
     }
-  }
+  };
 });
 
 app.listen(3000);
 console.log('app listening on port 3000');
 ```
 
-  Response:
+Response:
 
 ```
 $ GET /?fields=name,location/name
@@ -73,18 +77,18 @@ $ GET /?fields=name,location/name
 
 ### Array responses
 
- Script:
+Script:
 
 ```js
-var mask = require('koa-json-mask');
-var koa = require('koa');
+const Koa = require('koa');
+const mask = require('koa-json-mask');
 
-var app = koa();
+const app = new Koa();
 
 app.use(mask());
 
-app.use(function *() {
-  this.body = [
+app.use(async ctx => {
+  ctx.body = [
     {
       name: 'tobi',
       packages: 5,
@@ -110,7 +114,7 @@ app.listen(3000);
 console.log('app listening on port 3000');
 ```
 
-  Response:
+Response:
 
 ```
 $ GET /?fields=name,location/name
@@ -134,18 +138,16 @@ $ GET /?fields=name,location/name
 
 The syntax is loosely based on XPath:
 
-- ` a,b,c` comma-separated list will select multiple fields
-- ` a/b/c` path will select a field from its parent
-- `a(b,c)` sub-selection will select many fields from a parent
-- ` a/*/c` the star `*` wildcard will select all items in a field
-
+* `a,b,c` comma-separated list will select multiple fields
+* `a/b/c` path will select a field from its parent
+* `a(b,c)` sub-selection will select many fields from a parent
+* `a/*/c` the star `*` wildcard will select all items in a field
 
 ## More examples
 
 For more examples, take a look at the
 [examples section of the json-mask README](https://github.com/nemtsov/json-mask/#examples).
 
-
 # License
 
-  MIT
+MIT
