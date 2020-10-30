@@ -9,8 +9,7 @@
     "url": "https://github.com/nemtsov/koa-json-mask/issues"
   },
   "homepage": "https://github.com/nemtsov/koa-json-mask#readme",
-  "description":
-    "Middleware allowing the client to filter the response to only what they need",
+  "description": "Middleware allowing the client to filter the response to only what they need",
   "directories": {
     "example": "examples",
     "test": "test"
@@ -26,7 +25,7 @@
     "partial response"
   ],
   "dependencies": {
-    "json-mask": "^0.3.8"
+    "json-mask": "^1.0.4"
   },
   "scripts": {
     "test": "mocha"
@@ -39,6 +38,8 @@
   "engines": {
     "node": ">=7.6.0"
   },
-  "files": ["index.js"],
+  "files": [
+    "index.js"
+  ],
   "license": "MIT"
 }
